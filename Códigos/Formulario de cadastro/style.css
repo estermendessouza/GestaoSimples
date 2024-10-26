@@ -1,0 +1,130 @@
+
+body {
+    background-color: #E6E8E3;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-form {
+    width: 70vh;
+    margin-right: 250px;
+}
+.container {
+    width: 80%;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+
+}
+.text-center {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+
+}
+
+.input-box {
+    display: flex;
+    justify-content: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    margin-bottom: 1.1rem;
+}
+
+.input-box input {
+    padding-bottom: 1rem;
+    border-radius: 2px;
+    background-color: #E6E8E3;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+}
+
+.input-box input:hover {
+    box-shadow: 1px 1px 1px 1px rgb(146, 143, 143);
+}
+
+.input-box input:focus-visible {
+    outline: 1px solid gray;
+}
+
+
+.cadastro-button button {
+    width: 500px;
+    margin-top: 0.5rem;
+    border: none;
+    background-color: rgb(166, 202, 166);
+    padding: 0.62rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cadastro-button button a {
+    text-decoration: none;
+    color: white;
+    font-size: large;
+    font-weight: 500;
+}
+
+.cadastro-button button:hover {
+    background-color: rgb(116, 141, 116);
+}
+
+
+
+.login-button{
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    margin: 10px;
+}
+
+.login-button button {
+    background-color: #E6E8E3;
+    border: none;
+
+}
+.login-button button a {
+    color: brown;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 1330px) {
+
+    .img-form {
+        display: none;
+    }
+
+    .container {
+        width: 50%;
+
+    }
+    .form {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 1064px) {
+    .container {
+        width: 90%;
+        height: auto;
+    }
+    .input-group {
+        flex-direction: column;
+        overflow-y: scroll;
+        flex-wrap: nowrap;
+        max-height: 10rem;
+        padding-right: 3rem;
+        margin-top: 1rem;
+    }
+}
