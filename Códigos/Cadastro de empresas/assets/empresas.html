@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empresas Cadastradas</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+async function carregarEmpresas() {
+    const resposta = await fetch('https://574f960e-c244-4355-8367-ccc07e18e71e-00-3ud78sen3fz.riker.replit.dev/empresas');
+    const empresas = await resposta.json();
+    
+    const listaEmpresas = document.getElementById('lista-empresas');
+    listaEmpresas.innerHTML = '';
+
+    empresas.forEach(empresa => {
+
+        const li = document.createElement('li');
+        li.setAttribute('data-id', empresa.id); 
+        li.textContent = `${empresa.name} - ${empresa.cnpj} `;
+
+        const updateBtn = document.createElement('button');
+        updateBtn.textContent = 'Atualizar';
+        updateBtn.classList.add('update-btn');
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Deletar';
+        deleteBtn.classList.add('delete-btn');
+
+        updateBtn.addEventListener('click', () => {
+            window.location.href = `editarEmpresa.html?id=${empresa.id}`;
+        });
+
+        deleteBtn.addEventListener('click', () => deletarEmpresa(empresa.id, li));
+
+        li.appendChild(updateBtn);
+        li.appendChild(deleteBtn);
+
+        listaEmpresas.appendChild(li);
+    });
+}
+
+        async function atualizarEmpresa(id) {
+            alert(`Você pode atualizar a empresa com ID: ${id}. Implementar a lógica de atualização aqui.`);
+
+        }
+
+        async function deletarEmpresa(id, li) {
+            const resposta = await fetch(`https://574f960e-c244-4355-8367-ccc07e18e71e-00-3ud78sen3fz.riker.replit.dev/empresas/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (resposta.ok) {
+                alert('Empresa deletada com sucesso!');
+                li.remove();
+            } else {
+                alert('Erro ao deletar empresa.');
+            }
+        }
+
+        window.onload = carregarEmpresas;
+    </script>
+</head>
+<body>
+
+    <div id="menu-toggle" class="menu-button" onclick="toggleMenu()">&#9776;</div>
+
+    <nav id="sidebar" class="sidebar">
+        <ul>
+            <li><a href="#meu-perfil">Meu perfil</a></li>
+            <li><a href="#fornecedores">Fornecedores</a></li>
+            <li><a href="#historico-compras">Histórico de Compras</a></li>
+            <li><a href="#cadastro-produtos">Cadastro de Produtos</a></li>
+            <li><a href="#minhas-nfs">Minhas NFs</a></li>
+            <li><a href="#gerar-nfs">Gerar NFs</a></li>
+        </ul>
+    </nav>
+
+    <div class="cabecalho">
+        <h1>Empresas e Filiais</h1>
+        <button class="add-button">
+            <a href="NovoCadastro.html">+</a>
+        </button>
+    </div>
+
+    <div class="empresas">
+        <ul id="lista-empresas">
+            <li>
+                <span>Empresa ABC - 12.345.678/0001-99</span>
+                <div class="buttons-container">
+                    <button class="update-btn"></button>
+                    <button class="delete-btn"></button>
+                </div>
+            </li>
+        </ul>
+    </div>
+    
+</body>
+</html>
