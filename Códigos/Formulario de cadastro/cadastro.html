@@ -8,41 +8,40 @@
 </head>
 <body>
     <div class="container">
-
         <div class="img-form">
-            <img src="img/img.logo-img.jpeg" alt="">
+            <img src="img/img.logo-img.jpeg" alt="Logo">
         </div>
         
         <div class="form">
-            <form action="#">
+            <form id="form-cadastro">
                 <div class="form-header">
-                   
+                    <!-- Cabeçalho do Formulário -->
                 </div>
 
                 <div class="input-group">
                     <div class="input-box">
-                        <input id="name" type="text" name = "name" placeholder="Digite seu nome completo" required >
+                        <input id="name" type="text" name="name" placeholder="Digite seu nome completo" required>
                     </div>
 
                     <div class="input-box">
-                        <input id="data-de-nascimento" type="date" name = "data-de-nascimento" placeholder="Digite sua data de nascimento" required >
-                    </div>
-
-                
-                    <div class="input-box">
-                        <input id="email" type="email" name = "email" placeholder="Digite seu Email" required >
+                        <input id="data-de-nascimento" type="date" name="data-de-nascimento" placeholder="Digite sua data de nascimento" required>
                     </div>
 
                     <div class="input-box">
-                        <input id="Senha" type="password" name = "Senha" placeholder="Digite sua senha" required >
+                        <input id="email" type="email" name="email" placeholder="Digite seu Email" required>
                     </div>
+
                     <div class="input-box">
-                        <input id="Senha" type="password" name = "Confirme-Senha" placeholder="Confirme sua senha" required >
+                        <input id="senha" type="password" name="senha" placeholder="Digite sua senha" required>
+                    </div>
+
+                    <div class="input-box">
+                        <input id="confirme-senha" type="password" name="confirme-senha" placeholder="Confirme sua senha" required>
                     </div>
                 </div>
 
                 <div class="cadastro-button">
-                    <button><a href="tela-usuario">Cadastrar</a></button>
+                    <button type="submit">Cadastrar</button>
                 </div>
     
             </form>
@@ -54,5 +53,7 @@
         </div>
 
     </div>
+
+    <script src="cadastro.js"></script>
 </body>
 </html>
