@@ -89,3 +89,19 @@ img.logo-img {
     margin-bottom: 2px;
     padding-top: 2px;
 }
+
+.container h1 {
+    color: #76877D;
+}
+
+input.form-senha {
+    background-color: #E6E8E3;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+input.form-senha:focus {
+    background-color: #E6E8E3; /* Mantém a cor de fundo*/
+    outline: none; /* Remove a borda azul*/
+}
