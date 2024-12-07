@@ -12,17 +12,17 @@
         <div class="container d-flex flex-column justify-content-center align-items-center">
             <div class="text-center">
                 <img src="img/Logo GestãoSimples.png" alt="Gestão Simples" class="img-fluid logo-img">
-                <form>
+                <form method="POST" action="processarLogin.php">
                     <div class="mb-3">
                         <label for="login" class="form-label">Digite seu login</label>
-                        <input type="text" id="login" class="form-control" placeholder="Digite seu login">
+                        <input type="text" id="login" name="login" class="form-control" placeholder="Digite seu login">
                     </div>
                     <div class="mb-3">
                         <label for="senha" class="form-label">Digite sua senha</label>
-                        <input type="password" id="senha" class="form-control" placeholder="*******">
+                        <input type="password" id="senha" name="senha" class="form-control" placeholder="*******">
                     </div>
                     <div class="mb-3 text-end">
-                        <a href="recuperarSenha.html" class="text-muted">Esqueci minha senha</a>
+                        <a href="esqueceSenha.html" class="text-muted">Esqueci minha senha</a>
                     </div>
                     <button type="submit" class="btn btn-success w-100 mb-2">Entrar</button>
                     <p class="text-muted text-center my-2">OU</p>
