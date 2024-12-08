@@ -1,86 +1,138 @@
-// botão de adicionar (abrir/fechar formulário)
-document.getElementById('add-button').addEventListener('click', function(event) {
-    event.preventDefault();
-    document.getElementById('form-container').classList.toggle('d-none'); // Mostra ou oculta o formulário
+const baseURL = "https://574f960e-c244-4355-8367-ccc07e18e71e-00-3ud78sen3fz.riker.replit.dev/fornecedores"; // URL base do servidor
+
+// Função para carregar todos os fornecedores e adicionar eventos
+function carregarFornecedores() {
+    fetch(baseURL)
+        .then(response => response.json())
+        .then(fornecedores => {
+            const lista = document.getElementById("lista-empresas");
+            lista.innerHTML = ""; // Limpa a lista atual antes de recriá-la
+
+            fornecedores.forEach(fornecedor => {
+                const li = document.createElement("li");
+                li.className = "list-group-item d-flex justify-content-between align-items-center";
+                li.innerHTML = `
+                    <span>${fornecedor.nome} | ${fornecedor.telefone} | ${fornecedor.cnpj}</span>
+                    <div class="buttons-container d-flex gap-2">
+                        <button class="btn btn-warning update-btn" data-id="${fornecedor.id}">Editar</button>
+                        <button class="btn btn-danger delete-btn" data-id="${fornecedor.id}">Excluir</button>
+                    </div>
+                `;
+                lista.appendChild(li);
+
+                // Adicione eventos a cada botão dinâmico após criar o elemento
+                const editButton = li.querySelector(".update-btn");
+                const deleteButton = li.querySelector(".delete-btn");
+
+                // Adicionando eventos de clique
+                editButton.addEventListener("click", () => {
+                    console.log(`Botão "Editar" clicado para o fornecedor: ${fornecedor.nome}`); // Debug
+                    editarFornecedor(fornecedor);
+                });
+
+                deleteButton.addEventListener("click", () => {
+                    console.log(`Botão "Excluir" clicado para o fornecedor: ${fornecedor.nome}`); // Debug
+                    apagarFornecedor(fornecedor.id);
+                });
+            });
+
+            console.log("Fornecedores carregados e eventos adicionados."); // Debug
+        })
+        .catch(error => {
+            console.error("Erro ao carregar fornecedores:", error);
+        });
+}
+
+// Função para editar fornecedor (mostra o formulário com os dados do fornecedor selecionado)
+function editarFornecedor(fornecedor) {
+    const formContainer = document.getElementById("form-container");
+    formContainer.classList.remove("d-none"); // Exibe o formulário
+
+    // Preenche os campos do formulário
+    console.log("Editando fornecedor:", fornecedor); // Debug
+    document.getElementById("nome").value = fornecedor.nome;
+    document.getElementById("telefone").value = fornecedor.telefone;
+    document.getElementById("cnpj").value = fornecedor.cnpj;
+
+    // Atualiza o evento do formulário
+    const form = document.getElementById("fornecedor-form");
+    form.onsubmit = event => {
+        event.preventDefault();
+        console.log(`Enviando informações atualizadas para fornecedor: ${fornecedor.id}`); // Debug
+
+        const fornecedorEditado = {
+            nome: document.getElementById("nome").value,
+            telefone: document.getElementById("telefone").value,
+            cnpj: document.getElementById("cnpj").value,
+        };
+
+        atualizarFornecedor(fornecedor.id, fornecedorEditado);
+
+        // Oculta o formulário e reseta os campos
+        form.onsubmit = null;
+        event.target.reset();
+        formContainer.classList.add("d-none");
+    };
+}
+
+// Função para atualizar fornecedor na API
+function atualizarFornecedor(id, fornecedor) {
+    fetch(`${baseURL}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(fornecedor),
+    })
+        .then(response => {
+            if (response.ok) {
+                alert("Fornecedor atualizado com sucesso!");
+                carregarFornecedores(); // Atualiza a lista na interface
+            } else {
+                alert("Erro ao atualizar fornecedor.");
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao atualizar fornecedor:", error);
+        });
+}
+
+// Função para apagar fornecedor
+function apagarFornecedor(id) {
+    console.log(`Tentando apagar fornecedor com ID: ${id}`); // Debug
+    fetch(`${baseURL}/${id}`, {
+        method: "DELETE",
+    })
+        .then(response => {
+            if (response.ok) {
+                alert("Fornecedor excluído com sucesso!");
+                carregarFornecedores(); // Atualiza a lista na interface
+            } else {
+                alert("Erro ao excluir fornecedor.");
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao excluir fornecedor:", error);
+        });
+}
+
+// Botão de adicionar fornecedor
+document.getElementById("add-button").addEventListener("click", () => {
+    const formContainer = document.getElementById("form-container");
+    formContainer.classList.remove("d-none");
+
+    // Limpa os campos do formulário para um novo cadastro
+    document.getElementById("fornecedor-form").reset();
+    console.log("Formulario de cadastro exibido.");
 });
 
-// adicionar/editar itens
-document.getElementById('fornecedor-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    // Obter os valores no formulário
-    const nome = document.getElementById('nome').value.trim();
-    const telefone = document.getElementById('telefone').value.trim();
-    const cnpj = document.getElementById('cnpj').value.trim();
-
-    // Verificar se os campos estão preenchidos
-    if (!nome || !telefone || !cnpj) {
-        alert('Por favor, preencha todos os campos.');
-        return;
-    }
-
-    // Verifica se estamos editando ou criando um novo item
-    if (this.dataset.editando === "true") {
-        const li = document.querySelector(`#lista-empresas li.editando`);
-        if (li) {
-            // Atualiza os valores do item existente
-            li.querySelector('span').textContent = `${nome} | ${telefone} | ${cnpj}`;
-            li.classList.remove('editando'); // Remove a indicação de edição
-        }
-        delete this.dataset.editando; // Limpa o estado de edição
-
-    } else {
-        // Criar um novo item na lista
-        const novoItem = document.createElement('li');
-        novoItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-        novoItem.innerHTML = `
-            <span>${nome} | ${telefone} | ${cnpj}</span>
-            <div class="buttons-container d-flex">
-                <button class="btn btn-warning update-btn"></button>
-                <button class="btn btn-danger delete-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 24 24">
-                        <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 5 5 L 5 20 C 5 20.522222 5.1913289 21.05461 5.5683594 21.431641 C 5.9453899 21.808671 6.4777778 22 7 22 L 17 22 C 17.522222 22 18.05461 21.808671 18.431641 21.431641 C 18.808671 21.05461 19 20.522222 19 20 L 19 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 7 5 L 17 5 L 17 20 L 7 20 L 7 5 z M 9 7 L 9 18 L 11 18 L 11 7 L 9 7 z M 13 7 L 13 18 L 15 18 L 15 7 L 13 7 z" fill="#554E4E"></path>
-                    </svg>
-                </button>
-            </div>
-        `;
-        document.getElementById('lista-empresas').appendChild(novoItem);
-    }
-
-    // Limpar o formulário
-    document.getElementById('fornecedor-form').reset();
-
-    // Esconder o formulário
-    document.getElementById('form-container').classList.add('d-none');
+// Botão de cancelar cadastro/edição
+document.getElementById("cancel-button").addEventListener("click", () => {
+    const formContainer = document.getElementById("form-container");
+    formContainer.classList.add("d-none");
+    console.log("Formulario ocultado.");
 });
 
-// Delegação de eventos para edição e exclusão
-document.getElementById('lista-empresas').addEventListener('click', function(event) {
-    const target = event.target;
-
-    // Abrir o formulário para editar um item
-    if (target.closest('.update-btn')) {
-        const li = target.closest('li'); // Seleciona o item da lista (li)
-        const [nome, telefone, cnpj] = li.querySelector('span').textContent.split(' | ');
-
-        // Preencher o formulário com os dados do item existente
-        document.getElementById('nome').value = nome.trim();
-        document.getElementById('telefone').value = telefone.trim();
-        document.getElementById('cnpj').value = cnpj.trim();
-
-        // Indicar que este formulário está no modo edição
-        document.getElementById('fornecedor-form').dataset.editando = "true";
-
-        // Marcar o item como "sendo editado"
-        li.classList.add('editando');
-
-        // Mostrar o formulário
-        document.getElementById('form-container').classList.remove('d-none');
-    }
-
-    // Excluir um item
-    if (target.closest('.delete-btn')) {
-        const li = target.closest('li'); // Seleciona o item pai (li)
-        li.remove(); // Remove o item da lista
-    }
+// Inicializar a página carregando fornecedores
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("Página carregada! Carregando fornecedores..."); // Debug
+    carregarFornecedores();
 });
