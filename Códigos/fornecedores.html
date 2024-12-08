@@ -13,9 +13,84 @@
             height: 400px;
             width: 100%;
         }
+        .menu-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #66927E;
+            color: #fff;
+            transition: left 0.3s ease-in-out;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: white;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            margin: 10px 0;
+        }
+
+        ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #000 !important; /* Força a regra */
+            text-decoration: none !important;
+}
     </style>
 </head>
 <body>
+    <div class="container">
+        <button id="menu-btn" class="menu-btn">☰</button>
+        <div id="sidebar" class="sidebar">
+          <button id="close-btn" class="close-btn">×</button>
+          <ul>
+            <li><a href="#">Meu Perfil</a></li>
+            <li><a href="fornecedores.html">Fornecedores</a></li>
+            <li><a href="#">Histórico de Compras</a></li>
+            <li><a href="#">Cadastro de Produtos</a></li>
+          </ul>
+        </div>
+    </div>
+    <script>
+        const menuBtn = document.getElementById('menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const closeBtn = document.getElementById('close-btn');
+
+        // Evento para abrir o menu
+        menuBtn.addEventListener('click', () => {
+            sidebar.style.left = '0';
+        });
+
+        // Evento para fechar o menu
+        closeBtn.addEventListener('click', () => {
+            sidebar.style.left = '-250px';
+        });
+    </script>
     <div class="cabecalho d-flex justify-content-between align-items-center p-3">
         <h1>Fornecedores</h1>
         <button class="btn btn-primary add-button" id="add-button">
