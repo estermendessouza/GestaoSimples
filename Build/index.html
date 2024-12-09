@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tela de Pagamento</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #d7dacf;
+            color: #333;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            color: #b2cbae;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #b2cbae;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .product-list, .payment {
+            background-color: #eaf7ea;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        button {
+            background-color: #b2cbae;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #96a897;
+        }
+
+        .remove-button {
+            background-color: #e53935;
+        }
+
+        .remove-button:hover {
+            background-color: #d32f2f;
+        }
+
+        .pay-button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .payment p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #b2cbae;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content button {
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .cancel-button {
+            background-color: #d32f2f;
+        }
+
+        .cancel-button:hover {
+            background-color: #e53935;
+        }
+
+        /* Sidebar */
+        .menu-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+            z-index: 1000;
+        }
+
+        .menu-btn:hover {
+            color: #66927E;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #66927E;
+            color: #fff;
+            transition: left 0.3s ease-in-out;
+            padding: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+            text-align: right;
+        }
+
+        /* Estilos para o menu */
+        .sidebar a {
+            color: white; /* Cor inicial das letras */
+            text-decoration: none;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: block;
+            transition: color 0.3s ease; /* Transição suave para a cor */
+        }
+
+        .sidebar a:hover {
+            color: black; /* Cor das letras ao passar o mouse */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="menu-btn" class="menu-btn">☰</button>
+        <div id="sidebar" class="sidebar">
+            <button id="close-btn" class="close-btn">×</button>
+            <ul>
+                <li><a href="#">Meu Perfil</a></li>
+                <li><a href="#">Fornecedores</a></li>
+                <li><a href="#">Histórico de Compras</a></li>
+                <li><a href="#">Cadastro de Produtos</a></li>
+                <li><a href="#">Minhas NFs</a></li>
+                <li><a href="#">Gerar NFs</a></li>
+            </ul>
+        </div>
+        <h1>Tela de Pagamento</h1>
+        <div class="content">
+            <div class="product-list">
+                <h2>Produtos em Estoque</h2>
+                <ul id="products">
+                    <li>Produto 1 - R$50.00 <button onclick="addToCart('Produto 1', 50)">Adicionar ao Carrinho</button></li>
+                    <li>Produto 2 - R$30.00 <button onclick="addToCart('Produto 2', 30)">Adicionar ao Carrinho</button></li>
+                    <li>Produto 3 - R$20.00 <button onclick="addToCart('Produto 3', 20)">Adicionar ao Carrinho</button></li>
+                </ul>
+            </div>
+            <div class="payment">
+                <h2>Carrinho</h2>
+                <ul id="cart"></ul>
+                <p>Total: R$<span id="total">0.00</span></p>
+                <button class="pay-button" onclick="showPaymentOptions()">Finalizar Pagamento</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Opções de Pagamento -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <h2>Escolha a Forma de Pagamento</h2>
+            <button onclick="redirectToCardPayment()">Cartão de Crédito</button>
+            <button onclick="redirectToPixPayment()">PIX</button>
+            <button class="cancel-button" onclick="closeModal()">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addToCart(product, price) {
+            cart.push({ product, price });
+            updateCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartElement = document.getElementById('cart');
+            const totalElement = document.getElementById('total');
+
+            cartElement.innerHTML = '';
+            total = 0;
+
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.product} - R$${item.price.toFixed(2)} 
+                                <button class="remove-button" onclick="removeFromCart(${index})">Remover</button>`;
+                cartElement.appendChild(li);
+                total += item.price;
+            });
+
+            totalElement.textContent = total.toFixed(2);
+        }
+
+        function showPaymentOptions() {
+            const modal = document.getElementById('payment-modal');
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('payment-modal');
+            modal.style.display = 'none';
+        }
+
+        function redirectToCardPayment() {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+            } else {
+                sessionStorage.setItem('cartTotal', total);
+                window.location.href = 'card-payment.html';
+            }
+        }
+
+        function redirectToPixPayment() {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+            } else {
+                sessionStorage.setItem('cartTotal', total);
+                window.location.href = 'pix-payment.html';
+            }
+        }
+
+        // Sidebar functionality
+        const menuBtn = document.getElementById('menu-btn');
+        const closeBtn = document.getElementById('close-btn');
+        const sidebar = document.getElementById('sidebar');
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.style.left = '0';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            sidebar.style.left = '-250px';
+        });
+    </script>
+</body>
+</html>
