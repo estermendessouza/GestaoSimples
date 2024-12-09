@@ -1,8 +1,10 @@
-function toggleMenu() {
-    const sidebar = document.getElementById('sidebar');
-    if (sidebar.style.left === "-200px") {
-        sidebar.style.left = "0";
-    } else {
-        sidebar.style.left = "-200px";
-    }
-}
+JS:
+const menuBtn = document.getElementById('menu-btn');
+
+menuBtn.addEventListener('click', () => {
+  sidebar.style.left = '0';
+});
+
+closeBtn.addEventListener('click', () => {
+  sidebar.style.left = '-250px';
+});
