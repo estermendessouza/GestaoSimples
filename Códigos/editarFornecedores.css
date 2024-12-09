@@ -2,6 +2,10 @@ body {
     background-color: #E6E8E3;
 }
 
+/*#form-container {
+    display: block !important;
+}*/
+
 /* Estilo do cabeçalho */
 .cabecalho {
     background-color: #E6E8E3; /* Mesma cor de fundo da página */
@@ -9,6 +13,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 60px; /* Ajuste conforme necessário */
 }
 
 /* Cor do título Fornecedores */
