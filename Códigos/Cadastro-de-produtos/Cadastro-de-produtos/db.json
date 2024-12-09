@@ -1,0 +1,12 @@
+{
+    "produtos": [
+      {
+        "idProduto": 1,
+        "nome": "Produto Teste",
+        "descricao": "Descrição de teste",
+        "preco": "100.00",
+        "categoria": "Teste"
+      }
+    ]
+  }
+  
