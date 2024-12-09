@@ -83,6 +83,14 @@
             border: 1px solid #c3e6cb;
             border-radius: 5px;
         }
+
+        #listaProdutos {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -116,7 +124,7 @@
             </div>
             <div class="form-group">
                 <label for="descricao">Descrição:</label>
-                <textarea id="descricao" name="descricao" rows="4" required></textarea>
+                <textarea id="descricao" name=" descricao" rows="4" required></textarea>
             </div>
             <div class="form-group">
                 <label for="preco">Preço:</label>
@@ -157,6 +165,8 @@
         <div class="form-group">
             <button onclick="listarProdutos()">Listar Produtos</button>
         </div>
+
+        <div id="listaProdutos" class="hidden"></div>
     </div>
 
     <div class="overlay" id="overlay"></div>
@@ -241,76 +251,82 @@
         async function enviarProdutosComoJSON() {
             const url = "https://574f960e-c244-4355-8367-ccc07e18e71e-00-3ud78sen3fz.riker.replit.dev/produtos";
 
-            try {
-                const response = await fetch(url, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(produtos)
-                });
+try {
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(produtos)
+    });
 
-                if (!response.ok) {
-                    throw new Error("Erro ao enviar os produtos.");
-                }
+    if (!response.ok) {
+        throw new Error("Erro ao enviar os produtos.");
+    }
 
-                console.log("Produtos enviados com sucesso!");
-            } catch (error) {
-                console.error("Erro ao enviar os dados:", error);
-            }
-        }
+    console.log("Produtos enviados com sucesso!");
+} catch (error) {
+    console.error("Erro ao enviar os dados:", error);
+}
+}
 
-        async function listarProdutos() {
-            const url = "https://574f960e-c244-4355-8367-ccc07e18e71e-00-3ud78sen3fz.riker.replit.dev/produtos";
+async function listarProdutos() {
+const listaProdutosDiv = document.getElementById('listaProdutos');
+listaProdutosDiv.innerHTML = ''; // Limpa a lista antes de adicionar novos produtos
 
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error("Erro ao listar os produtos.");
-                }
-                const produtosListados = await response.json();
-                console.log(produtosListados);
-                // Aqui você pode adicionar lógica para exibir os produtos na interface
-            } catch (error) {
-                console.error("Erro ao listar os produtos:", error);
-            }
-        }
+if (produtos.length === 0) {
+    listaProdutosDiv.innerHTML = '<p>Nenhum produto cadastrado.</p>';
+    listaProdutosDiv.classList.remove('hidden');
+    return;
+}
 
-        async function atualizarProduto() {
-            const idProduto = document.getElementById('updateIdProduto').value;
-            const produtoExistente = produtos.find(produto => produto.idProduto == idProduto);
+const ul = document.createElement('ul');
 
-            if (!produtoExistente) {
-                alert('Produto não encontrado.');
-                return;
-            }
+produtos.forEach(produto => {
+    const li = document.createElement('li');
+    li.textContent = `ID: ${produto.idProduto}, Nome: ${produto.nome}, Categoria: ${produto.categoria}`;
+    ul.appendChild(li);
+});
 
-            // Preencher os campos do formulário com as informações do produto
-            document.getElementById('idProduto').value = produtoExistente.idProduto;
-            document.getElementById('nome').value = produtoExistente.nome;
-            document.getElementById('descricao').value = produtoExistente.descricao;
-            document.getElementById('preco').value = produtoExistente.preco;
-            document.getElementById('categoria').value = produtoExistente.categoria;
+listaProdutosDiv.appendChild(ul);
+listaProdutosDiv.classList.remove('hidden'); // Exibe a lista
+}
 
-            mostrarMensagem('Produto encontrado. Faça as alterações e clique em "Cadastrar Produto" para salvar.');
-        }
+async function atualizarProduto() {
+const idProduto = document.getElementById('updateIdProduto').value;
+const produtoExistente = produtos.find(produto => produto.idProduto == idProduto);
 
-        async function excluirProduto() {
-            const idProduto = document.getElementById('deleteIdProduto').value;
-            const produtoIndex = produtos.findIndex(produto => produto.idProduto == idProduto);
+if (!produtoExistente) {
+    alert('Produto não encontrado.');
+    return;
+}
 
-            if (produtoIndex === -1) {
-                alert('Produto não encontrado.');
-                return;
-            }
+// Preencher os campos do formulário com as informações do produto
+document.getElementById('idProduto').value = produtoExistente.idProduto;
+document.getElementById('nome').value = produtoExistente.nome;
+document.getElementById('descricao').value = produtoExistente.descricao;
+document.getElementById('preco').value = produtoExistente.preco;
+document.getElementById('categoria').value = produtoExistente.categoria;
 
-            produtos.splice(produtoIndex, 1);
-            mostrarMensagem('Produto excluído com sucesso!');
-            document.getElementById('deleteIdProduto').value = ''; // Limpa o campo após a exclusão
+mostrarMensagem('Produto encontrado. Faça as alterações e clique em "Cadastrar Produto" para salvar.');
+}
 
-            // Limpa todos os campos do formulário
-            document.getElementById('produtoForm').reset();
-        }
-    </script>
+async function excluirProduto() {
+const idProduto = document.getElementById('deleteIdProduto').value;
+const produtoIndex = produtos.findIndex(produto => produto.idProduto == idProduto);
+
+if (produtoIndex === -1) {
+    alert('Produto não encontrado.');
+    return;
+}
+
+produtos.splice(produtoIndex, 1);
+mostrarMensagem('Produto excluído com sucesso!');
+document.getElementById('deleteIdProduto').value = ''; // Limpa o campo após a exclusão
+
+// Limpa todos os campos do formulário
+document.getElementById('produtoForm').reset();
+}
+</script>
 </body>
-</html> 
+</html>
