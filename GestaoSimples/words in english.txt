@@ -1,0 +1,7 @@
+seize = agarrar, apreender
+advice = conselho
+deal = negócio
+reassuring = tranquilizador, reconfortante
+thought/allthought = pensamento/ pensamento geral
+taught = ensinar
+lack = falta
