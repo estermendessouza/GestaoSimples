@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Empresa</title>
+    <link rel="stylesheet" href="editarEmpresa.css">
+
+    <script>
+
+        function getURLParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        async function carregarDadosEmpresa() {
+            const empresaId = getURLParameter('id');
+            if (empresaId) {
+
+                const resposta = await fetch(`https://574f960e-c244-4355-8367-ccc07e18e71e-00-3ud78sen3fz.riker.replit.dev/empresas/${empresaId}`);
+                const empresa = await resposta.json();
+
+                document.getElementById('nome').value = empresa.name;
+                document.getElementById('endereco').value = empresa.endereco || '';
+                document.getElementById('telefone').value = empresa.telefone || '';  
+                document.getElementById('id').value = empresa.id;  
+            }
+        }
+
+        async function salvarEmpresa(event) {
+            event.preventDefault();
+
+            const id = document.getElementById('id').value;
+            const nome = document.getElementById('nome').value;
+            const endereco = document.getElementById('endereco').value;
+            const telefone = document.getElementById('telefone').value;
+
+            const empresaData = { 
+                name: nome, 
+                endereco: endereco, 
+                telefone: telefone 
+            };
+
+            let resposta;
+            if (id) {
+                resposta = await fetch(`https://574f960e-c244-4355-8367-ccc07e18e71e-00-3ud78sen3fz.riker.replit.dev/empresas/${id}`, {
+                    method: 'PUT', 
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(empresaData)
+                });
+            } else {
+                resposta = await fetch('https://574f960e-c244-4355-8367-ccc07e18e71e-00-3ud78sen3fz.riker.replit.dev/empresas', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(empresaData)
+                });
+            }
+
+            if (resposta.ok) {
+                alert('Empresa salva com sucesso!');
+                window.location.href = 'empresas.html'; 
+            } else {
+                alert('Erro ao salvar a empresa');
+            }
+        }
+
+        window.onload = carregarDadosEmpresa;
+    </script>
+</head>
+<body>
+    
+    <div class="cabecalho">
+        <h1>Cadastro de Empresa</h1>
+    </div>
+
+    <form onsubmit="salvarEmpresa(event)">
+        <input type="hidden" id="id" name="id">
+
+        <label for="nome">Nome da Empresa:</label>
+        <input type="text" id="nome" name="nome" required><br>
+
+        <label for="endereco">Endereço:</label>
+        <input type="text" id="endereco" name="endereco"><br>
+
+        <label for="telefone">Telefone:</label>
+        <input type="text" id="telefone" name="telefone"><br>
+
+        <button type="submit">Salvar</button>
+    </form>
+
+</body>
+</html>
