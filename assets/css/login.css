@@ -1,0 +1,107 @@
+body {
+    background-color: #E6E8E3;
+    font-family: Arial, Helvetica, sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    max-width: 400px; /* Define uma largura máxima para o formulário */
+    width: 100%; /* Ocupar 100% até o limite de 400px */
+    padding: 10px; /* Adiciona um espaçamento interno */
+}
+
+.text-center {
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.text-center img.logo-img {
+    width: 150px; /* Ajuste de tamanho da logo */
+    height: auto;
+    margin-bottom: 10px; /* Espaçamento entre a logo e o formulário */
+}
+
+form {
+    background-color: #E6E8E3; /* Fundo igual à página */
+    padding: 5px;
+}
+
+input.form-control {
+    background-color: #E6E8E3;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+input.form-control:focus {
+    background-color: #E6E8E3; /* Mantém a cor de fundo*/
+    outline: none; /* Remove a borda azul*/
+}
+
+.btn-success {
+    background-color: #66927E;
+    border-color: #66927E;
+    margin-bottom: 5px;
+}
+
+form label.form-label {
+    text-align: left;
+    color: #6c757d !important;
+    display: block; 
+    font-weight: 500; 
+}
+
+.text-muted.text-center.my-2 {
+    text-align: center;
+    color: #6c757d;
+    margin: 5px 0;
+}
+
+.btn-outline-dark {
+    color: #000;
+    border-color: #000;
+    margin-bottom: 2px;
+}
+
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+a.text-muted:hover {
+    color: #66927E !important;
+}
+
+.me-2 {
+    margin-right: 8px;
+}
+
+img[alt="Google"] {
+    width: 20px; 
+    height: 20px;
+}
+
+img.logo-img {
+    margin-bottom: 2px;
+    padding-top: 2px;
+}
+
+.container h1 {
+    color: #76877D;
+}
+
+input.form-senha {
+    background-color: #E6E8E3;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+input.form-senha:focus {
+    background-color: #E6E8E3; /* Mantém a cor de fundo*/
+    outline: none; /* Remove a borda azul*/
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Tela de Pagamento</title>
+    <link rel="stylesheet" href="/assets/css/telaPagamento.css">
+</head>
+<body>
+    <div class="container">
+        <button id="menu-btn" class="menu-btn">☰</button>
+        <div class="container">
+            <div id="sidebar" class="sidebar">
+                <button id="close-btn" class="close-btn">×</button>
+                <ul>
+                    <li><a href="empresas.html">Empresas e Filiais</a></li>
+                    <li><a href="fornecedores.html">Fornecedores</a></li>
+                    <li><a href="telaPagamento.html">Adicionar Pagamento</a></li>
+                    <li><a href="produtos.html">Cadastro de Produtos</a></li>
+                </ul>
+            </div>
+        <h1>Tela de Pagamento</h1>
+        <div class="content">
+            <div class="product-list">
+                <h2>Produtos em Estoque</h2>
+                <ul id="products">
+                    <li>Produto 1 - R$50.00 <button onclick="addToCart('Produto 1', 50)">Adicionar ao Carrinho</button></li>
+                    <li>Produto 2 - R$30.00 <button onclick="addToCart('Produto 2', 30)">Adicionar ao Carrinho</button></li>
+                    <li>Produto 3 - R$20.00 <button onclick="addToCart('Produto 3', 20)">Adicionar ao Carrinho</button></li>
+                </ul>
+            </div>
+            <div class="payment">
+                <h2>Carrinho</h2>
+                <ul id="cart"></ul>
+                <p>Total: R$<span id="total">0.00</span></p>
+                <button class="pay-button" onclick="showPaymentOptions()">Finalizar Pagamento</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Opções de Pagamento -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <h2>Escolha a Forma de Pagamento</h2>
+            <button onclick="redirectToCardPayment()">Cartão de Crédito</button>
+            <button onclick="redirectToPixPayment()">PIX</button>
+            <button class="cancel-button" onclick="closeModal()">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        let cart = [];
+        let total = 0;
+
+        function addToCart(product, price) {
+            cart.push({ product, price });
+            updateCart();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartElement = document.getElementById('cart');
+            const totalElement = document.getElementById('total');
+
+            cartElement.innerHTML = '';
+            total = 0;
+
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.product} - R$${item.price.toFixed(2)} 
+                                <button class="remove-button" onclick="removeFromCart(${index})">Remover</button>`;
+                cartElement.appendChild(li);
+                total += item.price;
+            });
+
+            totalElement.textContent = total.toFixed(2);
+        }
+
+        function showPaymentOptions() {
+            const modal = document.getElementById('payment-modal');
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('payment-modal');
+            modal.style.display = 'none';
+        }
+
+        function redirectToCardPayment() {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+            } else {
+                sessionStorage.setItem('cartTotal', total);
+                window.location.href = 'card-payment.html';
+            }
+        }
+
+        function redirectToPixPayment() {
+            if (cart.length === 0) {
+                alert('Seu carrinho está vazio!');
+            } else {
+                sessionStorage.setItem('cartTotal', total);
+                window.location.href = 'pix.html';
+            }
+        }
+
+        // Sidebar functionality
+        const menuBtn = document.getElementById('menu-btn');
+        const closeBtn = document.getElementById('close-btn');
+        const sidebar = document.getElementById('sidebar');
+
+        menuBtn.addEventListener('click', () => {
+            sidebar.style.left = '0';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            sidebar.style.left = '-250px';
+        });
+    </script>
+</body>
+</html>

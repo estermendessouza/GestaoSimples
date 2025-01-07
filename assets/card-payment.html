@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pagamento com Cartão</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #E6E8E3;
+            color: #333;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Adicionado para que o botão de menu seja posicionado em relação ao body */
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 28px;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: 600;
+        }
+
+        h2 {
+        font-size: 28px;
+        color: #333;
+        text-align: left;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .product-list, .payment {
+            background-color: #eaf7ea;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6ab187, #4ca1af); /* Gradiente sutil */
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transição suave apenas para transformação e sombra */
+            box-sizing: border-box;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background-color: #96a897;
+        }
+
+        .remove-button {
+            background-color: #e53935;
+        }
+
+        .remove-button:hover {
+            background-color: #d32f2f;
+        }
+
+        .pay-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6ab187, #4ca1af); /* Gradiente sutil */
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transição suave apenas para transformação e sombra */
+            box-sizing: border-box;
+            font-weight: 600;
+        }
+
+        .payment p {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6ab187, #4ca1af); /* Gradiente sutil */
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transição suave apenas para transformação e sombra */
+            box-sizing: border-box;
+            font-weight: 600;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10 px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content button {
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .cancel-button {
+            background-color: #d32f2f;
+        }
+
+        .cancel-button:hover {
+            background-color: #e53935;
+        }
+
+        /* Sidebar */
+        .menu-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(240, 240, 240, 0.8); /* Fundo cinza claro com leve transparência */
+    border: none;
+    border-radius: 8px; /* Bordas arredondadas */
+    font-size: 14px; /* Tamanho da fonte reduzido */
+    cursor: pointer;
+    color: #ffffff;
+    padding: 6px 8px; /* Ajuste o preenchimento para tornar o botão menor na horizontal */
+    width: 50px; /* Defina uma largura fixa para o botão */
+    z-index: 1000;
+    transition: background-color 0.3s ease; /* Transição suave para a cor de fundo */
+    text-align: center; /* Centraliza o texto dentro do botão */
+}
+
+.menu-btn:hover {
+    background-color: rgba(220, 220, 220, 0.8); /* Cor de fundo ao passar o mouse */
+    color: #66927E;
+}
+
+.menu-btn:hover {
+    background-color: rgba(220, 220, 220, 0.8); /* Cor de fundo ao passar o mouse */
+    color: #66927E;
+}
+
+        .menu-btn:hover {
+            background-color: rgba(220, 220, 220, 0.8); /* Cor de fundo ao passar o mouse */
+            color: #ffffff;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -400px;
+            width: 250px;
+            height: 100%;
+            background-color: #66927E;
+            color: #fff;
+            transition: left 0.3s ease-in-out;
+            padding: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+            text-align: right;
+            
+        }
+
+        /* Estilos para o menu */
+        .sidebar a {
+            color: white; /* Cor inicial das letras */
+            text-decoration: none;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: block;
+            transition: color 0.3s ease; /* Transição suave para a cor */
+        }
+
+        .sidebar a:hover {
+            color: black; /* Cor das letras ao passar o mouse */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Insira os Dados do Cartão</h1>
+        <form id="payment-form">
+            <input type="text" id="name" placeholder="Nome no Cartão" required>
+            <input 
+                type="text" 
+                id="card-number" 
+                placeholder="Número do Cartão (0000 0000 0000 0000)" 
+                maxlength="19" 
+                pattern="(\d{4} ){3}\d{4}" 
+                title="Digite no formato: 0000 0000 0000 0000" 
+                required
+                oninput="formatCardNumber(event)">
+            <input type="text" id="expiry-date" placeholder="Data de Validade (MM/AA)" maxlength="5" required>
+            <input type="text" id="cvv" placeholder="CVV" maxlength="3" required>
+            <button type="submit">Confirmar Pagamento</button>
+        </form>
+    </div>
+
+    <script>
+        // Função para formatar o número do cartão
+        function formatCardNumber(event) {
+            let input = event.target;
+            let value = input.value.replace(/\D/g, ''); // Remove tudo que não for número
+            value = value.replace(/(\d{4})(?=\d)/g, '$1 '); // Adiciona espaços a cada 4 dígitos
+            input.value = value;
+        }
+
+        // Função para enviar o pagamento via POST
+        function enviarPagamento(dadosPagamento) {
+            fetch('https://574f960e-c244-4355-8367-ccc07e18e71e-00-3ud78sen3fz.riker.replit.dev/pagamentos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dadosPagamento)
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Pagamento confirmado com sucesso!');
+                } else {
+                    alert('Erro ao confirmar pagamento.');
+                }
+            })
+            .catch(error => console.error('Erro:', error));
+        }
+
+        // Evento de envio do formulário
+        document.getElementById('payment-form').addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            // Coleta os dados do formulário
+            const paymentData = {
+                name: document.getElementById('name').value,
+                cardNumber: document.getElementById('card-number').value,
+                expiryDate: document.getElementById('expiry-date').value,
+                cvv: document.getElementById('cvv').value
+            };
+
+            // Envia os dados para o servidor (POST)
+            enviarPagamento(paymentData);
+
+            alert('Pagamento enviado para o servidor!');
+        });
+    </script>
+</body>
+</html>

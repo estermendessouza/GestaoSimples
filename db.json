@@ -1,0 +1,27 @@
+{
+  "pagamentos": [
+    {
+      "id": "e622",
+      "name": "Pessoa1",
+      "cardNumber": "0000 0000 0000 0000",
+      "expiryDate": "0000",
+      "cvv": "000"
+    },
+    {
+      "id": "726c",
+      "method": "PIX",
+      "name": "pessoa2",
+      "cpf": "1111111111111111",
+      "qrCodeImage": "https://img.odcdn.com.br/wp-content/uploads/2019/06/20190628211430.jpg",
+      "status": "Pendente",
+      "timestamp": "2024-12-07T16:00:39.635Z"
+    },
+    {
+      "id": "f9b7",
+      "name": "Pessoa3",
+      "cardNumber": "3333 3333 3333 3333",
+      "expiryDate": "333",
+      "cvv": "333"
+    }
+  ]
+}
